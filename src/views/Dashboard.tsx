@@ -36,13 +36,77 @@ const MiningAnimation = () => {
   );
 };
 
+const AddressGenerator = ({ address }: { address: string }) => {
+  const [displayAddress, setDisplayAddress] = useState('');
+  const [isGenerating, setIsGenerating] = useState(true);
+
+  useEffect(() => {
+    let iteration = 0;
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
+    
+    const interval = setInterval(() => {
+      setDisplayAddress(
+        address
+          .split('')
+          .map((char, index) => {
+            if (index < iteration) return address[index];
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('')
+      );
+
+      if (iteration >= address.length) {
+        clearInterval(interval);
+        setIsGenerating(false);
+      }
+      iteration += 1;
+    }, 40);
+
+    return () => clearInterval(interval);
+  }, [address]);
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between mb-1">
+        <label className="text-[10px] text-slate-500 font-black uppercase tracking-widest block ml-1">
+          {isGenerating ? 'Generating Secure Node Address...' : 'USDT Deposit Address (TRC20)'}
+        </label>
+        {isGenerating && (
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="w-3 h-3 border border-accent border-t-transparent rounded-full"
+          />
+        )}
+      </div>
+      <div className={`flex items-center gap-3 p-4 bg-slate-900 border rounded-xl md:rounded-2xl group transition-all ${isGenerating ? 'border-accent/30 animate-pulse' : 'border-slate-800 hover:border-accent/50'}`}>
+        <span className={`text-[10px] md:text-xs font-mono break-all flex-1 ${isGenerating ? 'text-accent/70' : 'text-slate-300'}`}>
+          {displayAddress}
+        </span>
+        <button 
+          onClick={() => {
+            if (!isGenerating) {
+              navigator.clipboard.writeText(address);
+              // You could add a toast notification here
+            }
+          }}
+          disabled={isGenerating}
+          className={`${isGenerating ? 'opacity-20 cursor-not-allowed' : 'text-slate-500 hover:text-accent'} p-1 transition-colors`}
+        >
+          <Copy size={18} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const Dashboard: React.FC = () => {
   const { balance, currentPlan } = useMining();
   const [selectedUpgrade, setSelectedUpgrade] = useState<PlanType | null>(null);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const progress = (balance % 1) * 100;
-  const usdtDepositAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
+  const usdtDepositAddress = "TYDG52PVhiKTiSdi11AcUr3SGQLJactRW6";
 
   const handleUpgradeClick = (planName: PlanType) => {
     setSelectedUpgrade(planName);
@@ -213,13 +277,7 @@ const Dashboard: React.FC = () => {
                   <span className="text-xl md:text-2xl font-black text-white">${PLANS[selectedUpgrade].price} USDT</span>
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] text-slate-500 font-black uppercase tracking-widest block ml-1">USDT Deposit Address (ERC20/TRC20)</label>
-                  <div className="flex items-center gap-3 p-4 bg-slate-900 border border-slate-800 rounded-xl md:rounded-2xl group transition-all hover:border-accent/50">
-                    <span className="text-[10px] md:text-xs font-mono text-slate-300 break-all flex-1">{usdtDepositAddress}</span>
-                    <button className="text-slate-500 hover:text-accent p-1 transition-colors"><Copy size={18} /></button>
-                  </div>
-                </div>
+                <AddressGenerator address={usdtDepositAddress} />
 
                 <div className="flex gap-4 p-4 bg-accent/5 border border-accent/20 rounded-xl md:rounded-2xl">
                   <AlertCircle className="text-accent shrink-0" size={20} />
