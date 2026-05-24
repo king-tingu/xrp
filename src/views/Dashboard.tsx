@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Cpu, TrendingUp, ChevronRight, X, Copy, AlertCircle, Activity } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useMining, PLANS } from '../context/MiningContext';
 import type { PlanType } from '../context/MiningContext';
 import { DEPOSIT_ADDRESSES, EXCHANGE_LOGOS } from '../lib/constants';
@@ -296,6 +297,16 @@ const Dashboard: React.FC = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-xs md:text-sm font-bold text-slate-400">Required Deposit</span>
                   <span className="text-xl md:text-2xl font-black text-white">${PLANS[selectedUpgrade].price} USDT</span>
+                </div>
+
+                <div className="flex justify-center py-2">
+                  <div className="bg-white p-2 rounded-xl shadow-lg">
+                    <QRCodeSVG 
+                      value={usdtDepositAddress}
+                      size={140}
+                      level="H"
+                    />
+                  </div>
                 </div>
 
                 <AddressGenerator address={usdtDepositAddress} />

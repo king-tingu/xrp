@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet as WalletIcon, ArrowDownCircle, ArrowUpCircle, Copy, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useMining } from '../context/MiningContext';
 import { DEPOSIT_ADDRESSES, EXCHANGE_LOGOS } from '../lib/constants';
 
@@ -125,18 +126,22 @@ const Wallet: React.FC = () => {
           </div>
           
           <div className="flex flex-col items-center gap-6 py-4">
-            {/* QR Code Placeholder */}
-            <div className="w-40 h-40 md:w-48 md:h-48 bg-white p-3 md:p-4 rounded-xl md:rounded-2xl relative shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-              <div className="w-full h-full bg-slate-950 rounded-lg flex items-center justify-center border-2 md:border-4 border-white overflow-hidden">
-                <div className="grid grid-cols-5 gap-1 p-2 w-full h-full">
-                   {[...Array(25)].map((_, i) => (
-                     <div key={i} className={`w-full h-full rounded-sm ${Math.random() > 0.5 ? 'bg-accent' : 'bg-slate-800 opacity-20'}`} />
-                   ))}
-                </div>
-              </div>
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-10">
-                 <ShieldCheck size={64} className="text-black" />
-              </div>
+            {/* Real QR Code */}
+            <div className="w-40 h-40 md:w-48 md:h-48 bg-white p-3 md:p-4 rounded-xl md:rounded-2xl relative shadow-[0_0_30px_rgba(255,255,255,0.1)] flex items-center justify-center">
+              <QRCodeSVG 
+                value={usdtDepositAddress}
+                size={160}
+                level="H"
+                includeMargin={false}
+                imageSettings={{
+                  src: "/favicon.svg",
+                  x: undefined,
+                  y: undefined,
+                  height: 24,
+                  width: 24,
+                  excavate: true,
+                }}
+              />
             </div>
             
             <div className="w-full space-y-4">
