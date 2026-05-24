@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet as WalletIcon, ArrowDownCircle, ArrowUpCircle, Copy, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Wallet as WalletIcon, ArrowDownCircle, ArrowUpCircle, Copy, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useMining } from '../context/MiningContext';
 import { DEPOSIT_ADDRESSES, EXCHANGE_LOGOS } from '../lib/constants';
@@ -17,7 +17,7 @@ const AddressGenerator = ({ address }: { address: string }) => {
       setDisplayAddress(
         address
           .split('')
-          .map((char, index) => {
+          .map((_char, index) => {
             if (index < iteration) return address[index];
             return chars[Math.floor(Math.random() * chars.length)];
           })

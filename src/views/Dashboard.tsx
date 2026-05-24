@@ -50,7 +50,7 @@ const AddressGenerator = ({ address }: { address: string }) => {
       setDisplayAddress(
         address
           .split('')
-          .map((char, index) => {
+          .map((_char, index) => {
             if (index < iteration) return address[index];
             return chars[Math.floor(Math.random() * chars.length)];
           })
