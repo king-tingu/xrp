@@ -6,8 +6,6 @@ import type { PlanType } from '../context/MiningContext';
 import { DEPOSIT_ADDRESSES, EXCHANGE_LOGOS } from '../lib/constants';
 
 const MiningAnimation = () => {
-
-const MiningAnimation = () => {
   return (
     <div className="relative w-full h-32 bg-slate-950/50 rounded-2xl border border-slate-900 overflow-hidden flex items-center justify-center">
       <div className="absolute inset-0 grid grid-cols-12 gap-1 opacity-20">
