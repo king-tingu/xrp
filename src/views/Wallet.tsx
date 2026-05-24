@@ -1,7 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Wallet as WalletIcon, ArrowDownCircle, ArrowUpCircle, Copy, CheckCircle2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { useMining } from '../context/MiningContext';
+import { DEPOSIT_ADDRESSES, EXCHANGE_LOGOS } from '../lib/constants';
+
+const AddressGenerator = ({ address }: { address: string }) => {
+  const [displayAddress, setDisplayAddress] = useState('');
+  const [isGenerating, setIsGenerating] = useState(true);
+
+  useEffect(() => {
+    let iteration = 0;
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz123456789';
+    
+    const interval = setInterval(() => {
+      setDisplayAddress(
+        address
+          .split('')
+          .map((char, index) => {
+            if (index < iteration) return address[index];
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('')
+      );
+
+      if (iteration >= address.length) {
+        clearInterval(interval);
+        setIsGenerating(false);
+      }
+      iteration += 1;
+    }, 40);
+
+    return () => clearInterval(interval);
+  }, [address]);
+
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <div className={`flex items-center gap-3 p-4 bg-slate-950/50 border rounded-xl md:rounded-2xl group transition-all ${isGenerating ? 'border-accent/30 animate-pulse' : 'border-slate-800 hover:border-slate-700'}`}>
+        <span className={`text-[10px] md:text-xs font-mono break-all flex-1 ${isGenerating ? 'text-accent/70' : 'text-slate-300'}`}>
+          {displayAddress}
+        </span>
+        <button 
+          onClick={() => {
+            if (!isGenerating) {
+              navigator.clipboard.writeText(address);
+            }
+          }}
+          disabled={isGenerating}
+          className={`${isGenerating ? 'opacity-20 cursor-not-allowed' : 'text-slate-500 hover:text-accent'} p-1 transition-colors`}
+        >
+          <Copy size={16} />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const Wallet: React.FC = () => {
   const { balance, withdrawableBalance } = useMining();
@@ -11,7 +63,7 @@ const Wallet: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const usdtDepositAddress = "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
+  const usdtDepositAddress = DEPOSIT_ADDRESSES.USDT_TRC20;
 
   const handleWithdraw = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,15 +141,24 @@ const Wallet: React.FC = () => {
             
             <div className="w-full space-y-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] text-slate-500 font-black uppercase tracking-widest ml-1">USDT Address (ERC20/TRC20)</label>
-                <div className="flex items-center gap-2 p-4 bg-slate-950/50 border border-slate-800 rounded-xl md:rounded-2xl group transition-all hover:border-slate-700">
-                  <span className="text-[10px] md:text-xs font-mono text-slate-300 truncate flex-1">{usdtDepositAddress}</span>
-                  <button className="text-slate-500 hover:text-accent p-1"><Copy size={16} /></button>
-                </div>
+                <label className="text-[10px] text-slate-500 font-black uppercase tracking-widest ml-1">USDT Address (TRC20)</label>
+                <AddressGenerator address={usdtDepositAddress} />
               </div>
             </div>
           </div>
           
+          <div className="pt-4 border-t border-slate-800/50">
+             <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-4 text-center">Verified Network Partners</p>
+             <div className="flex flex-wrap justify-center gap-6 opacity-40 grayscale hover:grayscale-0 transition-all duration-500">
+                {EXCHANGE_LOGOS.map((logo) => (
+                  <div key={logo.name} className="flex items-center gap-2 group cursor-default">
+                    <img src={logo.url} alt={logo.name} className="w-5 h-5 md:w-6 md:h-6 object-contain" />
+                    <span className="text-[10px] font-bold text-slate-400 group-hover:text-white transition-colors">{logo.name}</span>
+                  </div>
+                ))}
+             </div>
+          </div>
+
           <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl md:rounded-2xl flex gap-3">
              <AlertTriangle className="text-amber-500 shrink-0" size={18} />
              <p className="text-[10px] text-amber-500/80 leading-relaxed font-medium">

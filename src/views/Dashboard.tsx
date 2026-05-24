@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Cpu, TrendingUp, ChevronRight, X, Copy, AlertCircle, Activity } from 'lucide-react';
 import { useMining, PLANS } from '../context/MiningContext';
 import type { PlanType } from '../context/MiningContext';
+import { DEPOSIT_ADDRESSES, EXCHANGE_LOGOS } from '../lib/constants';
+
+const MiningAnimation = () => {
 
 const MiningAnimation = () => {
   return (
@@ -106,7 +109,7 @@ const Dashboard: React.FC = () => {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const progress = (balance % 1) * 100;
-  const usdtDepositAddress = "TYDG52PVhiKTiSdi11AcUr3SGQLJactRW6";
+  const usdtDepositAddress = DEPOSIT_ADDRESSES.USDT_TRC20;
 
   const handleUpgradeClick = (planName: PlanType) => {
     setSelectedUpgrade(planName);
@@ -247,6 +250,19 @@ const Dashboard: React.FC = () => {
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* Network Partners Section */}
+      <section className="pt-6 md:pt-10 border-t border-slate-800/50">
+        <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-6 text-center">In Collaboration With</p>
+        <div className="flex flex-wrap justify-center gap-6 md:gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
+          {EXCHANGE_LOGOS.map((logo) => (
+            <div key={logo.name} className="flex items-center gap-3 group cursor-default">
+              <img src={logo.url} alt={logo.name} className="w-6 h-6 md:w-8 md:h-8 object-contain" />
+              <span className="text-xs font-black text-slate-400 group-hover:text-white transition-colors tracking-tight">{logo.name}</span>
+            </div>
+          ))}
         </div>
       </section>
 
