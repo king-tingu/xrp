@@ -257,7 +257,14 @@ const Dashboard: React.FC = () => {
         <div className="flex flex-wrap justify-center gap-6 md:gap-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-700">
           {EXCHANGE_LOGOS.map((logo) => (
             <div key={logo.name} className="flex items-center gap-3 group cursor-default">
-              <img src={logo.url} alt={logo.name} className="w-6 h-6 md:w-8 md:h-8 object-contain" />
+              <img 
+                src={logo.url} 
+                alt={logo.name} 
+                className="w-6 h-6 md:w-8 md:h-8 object-contain" 
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://api.iconify.design/material-symbols:account-balance-wallet-outline.svg';
+                }}
+              />
               <span className="text-xs font-black text-slate-400 group-hover:text-white transition-colors tracking-tight">{logo.name}</span>
             </div>
           ))}
