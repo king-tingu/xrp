@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Cpu, TrendingUp, ChevronRight, X, Copy, AlertCircle, Activity } from 'lucide-react';
 import { useMining, PLANS } from '../context/MiningContext';
