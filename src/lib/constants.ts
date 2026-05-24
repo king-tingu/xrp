@@ -3,9 +3,9 @@ export const DEPOSIT_ADDRESSES = {
 };
 
 export const EXCHANGE_LOGOS = [
-  { name: 'Binance', url: 'https://upload.wikimedia.org/wikipedia/commons/e/e8/Binance_Logo.svg' },
-  { name: 'OKX', url: 'https://upload.wikimedia.org/wikipedia/commons/d/d7/OKX_logo.svg' },
-  { name: 'KuCoin', url: 'https://www.vectorlogo.zone/logos/kucoin/kucoin-icon.svg' },
-  { name: 'Huobi', url: 'https://upload.wikimedia.org/wikipedia/commons/1/12/Huobi_Logo.svg' },
-  { name: 'Bybit', url: 'https://upload.wikimedia.org/wikipedia/commons/1/1d/Bybit-logo.svg' }
+  { name: 'Binance', url: 'https://cdn.worldvectorlogo.com/logos/binance-logo-2.svg' },
+  { name: 'OKX', url: 'https://cdn.worldvectorlogo.com/logos/okx-logo.svg' },
+  { name: 'KuCoin', url: 'https://cdn.worldvectorlogo.com/logos/kucoin-1.svg' },
+  { name: 'Huobi', url: 'https://cdn.worldvectorlogo.com/logos/huobi-1.svg' },
+  { name: 'Bybit', url: 'https://cdn.worldvectorlogo.com/logos/bybit-logo.svg' }
 ];
